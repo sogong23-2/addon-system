@@ -19,12 +19,12 @@ class map{
         }
     }
 
-    public void add(int x, int y, int type){
-        this.map[x][y] = type;
+    public int getMapValue(int x, int y){
+        return this.map[x][y];
     }
 
-    public static void main(String[] args) {
-
+    public void add(int x, int y, int type){
+        this.map[x][y] = type;
     }
 
 }
