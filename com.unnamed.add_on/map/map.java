@@ -27,6 +27,4 @@ class map{
         this.map[x][y] = type;
     }
 
-
-
 }
