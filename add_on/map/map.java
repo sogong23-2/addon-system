@@ -11,7 +11,7 @@ class map{
         this.initMap();
     }
 
-    public initMap(){
+    void initMap(){
         for(int i = 0; i < r; i++){
             for(int j = 0; j < c; j++){
                 this.map[i][j] = 0;
