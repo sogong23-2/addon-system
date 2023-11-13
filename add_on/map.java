@@ -1,4 +1,6 @@
-class map{
+package add_on;
+
+public class map{
 
     int r, c;
 

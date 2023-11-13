@@ -1,7 +1,4 @@
-import add_on.sim.sim;
-import sim.*;
-
-//import com.umnamed.sim.*;
+import add_on.sim;
 
 /*
           Map size: 4 x 5
@@ -28,8 +25,7 @@ import sim.*;
 public class main {
     public static void main(String[] args) {
         sim s = new sim();
-
-        s.initMap(4, 5);
+        s.setMap(4, 5);
         s.setStart(1, 2);
         s.setSpot(4, 2);
         s.setSpot(1, 5);
