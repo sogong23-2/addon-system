@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+package add_on;
 
 
 public class sim {
@@ -10,12 +8,12 @@ public class sim {
     int x, y;
     int[][] map;
 
-    void move() {
+    public void move() {
         this.x += direction[0];
         this.y += direction[1];
     }
 
-    void turn() {
+    public void turn() {
         // {0, 1}, {1, 0}, {0, -1}, {-1, 0}
         if (direction[0] == 0 && direction[1] == 1) {
             direction[0] = 1;
@@ -32,12 +30,13 @@ public class sim {
         }
     }
 
-    void scan() {
+    public void scan() {
         int output;
 
         // scan hazard
         for (int i = 0; i < 4; i++) {
-            output = hazard.getSensorValue(x + direction[0], y + direction[1]);
+            output = sim.
+                    hazard.getSensorValue(x + direction[0], y + direction[1]);
             if (output != 0) {
                 map[x + direction[0]][y + direction[1]] = 4;
             }
@@ -61,21 +60,21 @@ public class sim {
         }
     }
 
-    void setMap(int r, int c) {
+    public void setMap(int r, int c) {
         map = new int[r][c];
     }
 
-    void setStart(int x, int y) {
+    public void setStart(int x, int y) {
         this.x = x;
         this.y = y;
         map[x][y] = 1;
     }
 
-    void setSpot(int x, int y) {
+    public void setSpot(int x, int y) {
         map[x][y] = 2;
     }
 
-    void setHazard(int x, int y) {
+    public void setHazard(int x, int y) {
         map[x][y] = 4;
     }
 

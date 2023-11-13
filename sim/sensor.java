@@ -1,14 +1,18 @@
-import add_on.*;
+package sim;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 interface sensor { // return value is differ by sensor type
+    String path = "./map.txt";
     int getSensorValue(int x, int y);
 }
 
-class hazard implements sensor {
-    int getSensorValue(int x, int y) {
-        if (map.getMapValue(x, y) == 4)
+public class hazard implements sensor {
+    public int getSensorValue(int x, int y) {
+        if (getMapValue(x, y) == 4)
             return 1;
         else
             return 0;
@@ -18,8 +22,8 @@ class hazard implements sensor {
 
 }
 
-class Colorblob implements sensor {  // return 0001, 0010, 0100, 1000 ( up, right, down, left )
-    int getSensorValue(int x, int y) {
+public class Colorblob implements sensor {  // return 0001, 0010, 0100, 1000 ( up, right, down, left )
+    public int getSensorValue(int x, int y) {
         int result = 0;
 
         if (map.getMapValue(x+1, y) == 8)
@@ -39,8 +43,8 @@ class Colorblob implements sensor {  // return 0001, 0010, 0100, 1000 ( up, righ
 }
 
 
-class positioning implements sensor {
-    int getSensorValue(int x, int y) {
+public class positioning implements sensor {
+    public int getSensorValue(int x, int y) {
         return 0;
     }
 
