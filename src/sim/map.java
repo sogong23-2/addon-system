@@ -5,8 +5,8 @@ import java.io.FileReader;
 
 public class map {
 
-    String path = "./map.txt";
-    int r, c;
+    String path = "/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./2023년 2학기/소프트웨어공학/Software Engineering/addon-system/src/map.txt";
+    public int r, c;
 
     int[][] map;
 

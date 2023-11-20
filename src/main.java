@@ -1,8 +1,9 @@
 import add_on.*;
 
-
 import java.util.Scanner;
 import java.util.Stack;
+
+import static java.lang.System.exit;
 
 
 /*
@@ -34,13 +35,56 @@ public class main {
     public static final int HAZARD = 4;
     public static final int COLOR_BLOB = 8;
 
-    static void find_route(map m, sim s){
+    public static boolean visited_all(int[][] visited){
+        for(int i = 0; i < visited.length; i++){
+            for(int j = 0; j < visited[0].length; j++){
+                if(visited[i][j] == 0) return false;
+            }
+        }
+        return true;
+    }
+
+    static void find_route(map m, sim s) {
+
+    }
+
+    static void scan_map(map m, sim s) {
+        int[][] visited = new int[m.r][m.c];
         Stack<int[]> stack = new Stack<>();
+        int[] pos = s.getPosition();
+        stack.push(new int[]{pos[0], pos[1]});
 
-        
+        while(!stack.isEmpty()){
+            int[] past = pos;
+            int[] current = stack.pop();
 
+            int x = current[0];
+            int y = current[1];
 
+            s.position[0] = x;
+            s.position[1] = y;
 
+            if(visited[x][y] == 1) continue;
+            visited[x][y] = 1;
+
+            int[][] sensorValue = s.scan();
+
+            if(sensorValue[0][0] == 1) m.insertValue(x, y, HAZARD);
+            if(sensorValue[1][0] == 1) m.insertValue(x+1, y, COLOR_BLOB);
+            if(sensorValue[1][1] == 1) m.insertValue(x, y+1, COLOR_BLOB);
+            if(sensorValue[1][2] == 1) m.insertValue(x-1, y, COLOR_BLOB);
+            if(sensorValue[1][3] == 1) m.insertValue(x, y-1, COLOR_BLOB);
+
+            //if(m.getMapValue(x, y) == HAZARD || m.getMapValue(x, y) == COLOR_BLOB) continue;
+
+            if(x - 1 >= 0 && visited[x-1][y] == 0) stack.push(new int[]{x-1, y});
+            if(x + 1 < m.r && visited[x+1][y] == 0) stack.push(new int[]{x+1, y});
+            if(y - 1 >= 0 && visited[x][y-1] == 0) stack.push(new int[]{x, y-1});
+            if(y + 1 < m.c && visited[x][y+1] == 0) stack.push(new int[]{x, y+1});
+
+            find_route(m, s);
+        }
+        System.out.println("scan_map");
     }
 
     public static void main(String[] args) {
@@ -52,54 +96,31 @@ public class main {
         System.out.println("Map size: ");
         int r = sc.nextInt();
         int c = sc.nextInt();
+        map m = new map(r, c);
+
         System.out.println("Starting point: ");
         position[0] = sc.nextInt();
         position[1] = sc.nextInt();
-        System.out.println("Spot: ");
-
-        map m = new map(r, c);
         sim s = new sim(position[0], position[1], 4, 5);
 
-        m.insertValue(1, 0, HAZARD);
-        m.insertValue(3, 2, HAZARD);
-        m.insertValue(4, 2, COLOR_BLOB);
-        m.insertValue(1, 5, COLOR_BLOB);
+        System.out.println("Spot: ");
 
 
-        int[][] visited = new int[r][c];
-        boolean visited_all = false;
+        //m.insertValue(1, 0, HAZARD);
+        //m.insertValue(3, 2, HAZARD);
+        //m.insertValue(3, 2, COLOR_BLOB);
+        //m.insertValue(1, 3, COLOR_BLOB);
 
-        while(!visited_all)
-        {
-            s.forward();
+        System.out.println("done");// exit(0);
 
-            int pos[] = s.getPosition();
-            if( pos != position){
-                s.turn();
-                s.turn();
-                s.forward();
-                s.turn();
-                s.turn();
+        scan_map(m, s);
+
+        int [][] map = m.getMap();
+        for(int i = 0; i < r; i++){
+            for(int j = 0; j < c; j++){
+                System.out.print(map[i][j] + " ");
             }
-
-            int[][] scan_result =  s.scan();
-
-            int[] hazard = scan_result[0];
-            int[] colorblob = scan_result[1];
-
-            if(hazard[0] == 1){
-                m.insertValue(pos[0] + direction[0], pos[1] + direction[1], HAZARD);
-            }
-
-            if(colorblob[0] == 1){
-                m.insertValue(pos[0] + direction[0], pos[1] + direction[1], COLOR_BLOB);
-            }
-
-            find_route(m, s);
-
-            visited[pos[0]][pos[1]] = 1;
-
+            System.out.println();
         }
-
     }
 }

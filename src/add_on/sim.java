@@ -23,7 +23,7 @@ public class sim {
     sensor hazard, colorblob, positioning;
     movement move;
     map map;
-    int[] position, direction; // 0: x, 1: y
+    public int [] position, direction; // 0: x, 1: y
 
     public sim (int x, int y, int r, int c) {
         hazard = new hazard();
