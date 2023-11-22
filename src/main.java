@@ -37,15 +37,6 @@ public class main {
     public static final int HAZARD = 4;
     public static final int COLOR_BLOB = 8;
 
-    public static boolean visited_all(int[][] visited){
-        for(int i = 0; i < visited.length; i++){
-            for(int j = 0; j < visited[0].length; j++){
-                if(visited[i][j] == 0) return false;
-            }
-        }
-        return true;
-    }
-
     static Stack<int[]> find_route(map m, sim s, int[] position, int[] target) {
         //print arguments
         int[] initial = position;
