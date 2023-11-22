@@ -144,10 +144,6 @@ public class main {
         }
         return path;
     }
-
-    static void scan_map(map m, sim s) {
-    }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
