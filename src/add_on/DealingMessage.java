@@ -1,37 +1,20 @@
 package add_on;
-import java.lang.String;
-import add_on.map;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class DealingMessage {
-
     public static final int SAFE = 0;
     public static final int HAZARD = 4;
     public static final int CRITICAL = 8;
-    map map;
+    public static map map;
 
-    void CheckFun(String msg){
-        String[] message = msg.split("/");
-        switch (message[0]){
-            case "ULM":
-                ULM(message);
-                break;
-            case "UDM":
-                UDM(message);
-                break;
-            case "PSR":
-                PSR();
-                break;
-            case "RSR":
-                RSR();
-                break;
-        }
-    }
-    void ULM(String[] message){
-        for(int i = 1; i < message.length; i++){
+    void ULM(String[] message) {
+        for (int i = 1; i < message.length; i++) {
             String[] tmpMessage = message[i].substring(1).split(",");
             int n = Integer.parseInt(tmpMessage[0]);
             int m = Integer.parseInt(tmpMessage[1]);
-            switch (message[i].charAt(0)){
+            switch (message[i].charAt(0)) {
                 case 'm':
                     map = new map(n, m);
                     break;
@@ -50,12 +33,13 @@ public class DealingMessage {
             }
         }
     }
-    void UDM(String[] message){
-        for(int i = 1; i < message.length; i++){
+
+    void UDM(String[] message) {
+        for (int i = 1; i < message.length; i++) {
             String[] tmpMessage = message[i].substring(1).split(",");
             int n = Integer.parseInt(tmpMessage[0]);
             int m = Integer.parseInt(tmpMessage[1]);
-            switch (message[i].charAt(0)){
+            switch (message[i].charAt(0)) {
                 case 'b':
                     map.insertValue(n, m, CRITICAL);
                     break;
@@ -67,49 +51,78 @@ public class DealingMessage {
             }
         }
     }
-    void PSR(){
-        ChildThread childThread = new ChildThread();
-        childThread.start();
+
+    private final BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
+
+    public void addMessage(String message) {
         try {
-            childThread.join(); // 자식 스레드가 종료될 때까지 기다림
+            messageQueue.put(message);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-    void RSR(){
 
+    public String getMessage() {
+        try {
+            return messageQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
+    public void startListening() {
+        Thread listenerThread = new Thread(() -> {
+            while (true) {
+                String[] message = getMessage().split("/");
+
+                switch (message[0]) {
+                    case "ULM":
+                        ULM(message);
+                        break;
+                    case "UDM":
+                        UDM(message);
+                        break;
+                    case "PSR":
+                        System.out.println("PSR 메시지를 받았습니다. 프로그램을 잠시 정지합니다.");
+                        ChildThread childThread = new ChildThread(this); // DealingMessage 인스턴스를 넘겨줌
+                        childThread.start();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        listenerThread.start();
+    }
 
     public static void main(String[] args) {
-        ParentThread parentThread = new ParentThread();
-        parentThread.start();
-    }
-}
-
-
-class ParentThread extends Thread {
-
-    @Override
-    public void run() {
         DealingMessage dm = new DealingMessage();
-        dm.CheckFun(message);
+        dm.startListening();
+
+        // 다른 시스템에서 메시지를 받아서 큐에 넣는 로직을 구현해야 한다.
+        // 소켓 통신을 이용하여 메시지를 받고 addMessage 메서드를 호출하여 큐에 메시지를 넣어야 한다.
     }
 }
 
 class ChildThread extends Thread {
+    private DealingMessage dealingMessage;
+
+    // 생성자를 통해 DealingMessage 인스턴스를 받음
+    public ChildThread(DealingMessage dealingMessage) {
+        this.dealingMessage = dealingMessage;
+    }
 
     @Override
     public void run() {
-        System.out.println("자식 스레드 시작");
+        System.out.println("자식 스레드가 실행됩니다.");
 
-        try {
-            while(message != "RSR")
-                Thread.sleep(3000); // 3초 동안 sleep
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (true) {
+            String message = dealingMessage.getMessage(); // RSR 메시지를 받기 위해 큐에서 메시지 확인
+            if (message != null && message.equals("RSR")) {
+                System.out.println("RSR 메시지를 받았습니다. 자식 스레드를 종료합니다.");
+                break;
+            }
         }
-
-        System.out.println("자식 스레드 종료");
     }
 }
