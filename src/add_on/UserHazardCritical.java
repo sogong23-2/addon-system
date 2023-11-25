@@ -1,3 +1,4 @@
+package add_on;
 import java.util.ArrayList;
 
 // String형 메시지를 잘라 hazard critical를 hazard_critical_map에 적용

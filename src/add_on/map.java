@@ -10,6 +10,8 @@ public class map{
     public int r, c;
 
     int[][] map;
+    int robotX;
+    int robotY;
 
     public map(int r, int c){
         this.r = r;
