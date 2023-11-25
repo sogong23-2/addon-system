@@ -10,9 +10,9 @@ class SocketInstance {
     private final ResponseListener responseListener;
 
     //TODO change init settings
-    private final int port = 5000;
-    private final String destinationIP = "192.168.1.100";
-    private final int destinationPort = 6000;
+    private final int port = 5002;
+    private final String destinationIP = "10.0.2.16";
+    private final int destinationPort = 5001;
 
     public SocketInstance(ResponseListener responseListener) {
         this.responseListener = responseListener;
@@ -32,6 +32,8 @@ class SocketInstance {
                     String request = reader.readLine();
 
                     // Simulate the API resolver handling in the SocketHandler class
+                    System.out.println("request: " + request);
+                    SocketHandler.apiResolver(request);
                     // Replace this with actual logic
                     // SocketHandler.apiResolver(request);
 

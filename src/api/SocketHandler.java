@@ -12,7 +12,7 @@ public class SocketHandler {
 
         switch (cmd) {
             case "PSR":
-                //
+                System.out.println("PSR");
                 break;
             case "UMG":
                 //
