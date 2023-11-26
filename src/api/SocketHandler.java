@@ -5,10 +5,8 @@ import java.util.List;
 public class SocketHandler {
 
     public static void apiResolver(String data) {
-        //String cmd = TokenDecoder.parseCmd(data);
-        String cmd = "PSR";
-        //List<String> tokens = TokenDecoder.parseToToken(data);
-        List<String> tokens = Arrays.asList();
+        String cmd = TokenDecoder.parseCmd(data);
+        List<String> tokens = TokenDecoder.parseToToken(data);
 
         switch (cmd) {
             case "PSR":

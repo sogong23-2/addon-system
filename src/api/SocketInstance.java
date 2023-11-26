@@ -25,17 +25,18 @@ class SocketInstance {
                 System.out.println("Server started, waiting for connections...");
 
                 while (true) {
+                    //Socket waiting....
                     Socket clientSocket = serverSocket.accept();
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     OutputStreamWriter writer = new OutputStreamWriter(clientSocket.getOutputStream());
+                    System.out.println(clientSocket.getInetAddress().getHostAddress() + " connected");
                     String request = reader.readLine();
-
-                    // Simulate the API resolver handling in the SocketHandler class
                     System.out.println("request: " + request);
+
                     SocketHandler.apiResolver(request);
-                    // Replace this with actual logic
-                    // SocketHandler.apiResolver(request);
+
+                    writer.write("ACK/r");
 
                     writer.close();
                     reader.close();
