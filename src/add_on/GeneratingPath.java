@@ -1,6 +1,7 @@
 package add_on;
 import java.util.ArrayList;
 import java.util.Scanner;
+import sim.movement;
 
 // map[][]을 받아 경로 계산
 // findPath 메서드로 경로 출력
@@ -8,7 +9,7 @@ public class GeneratingPath {
     public static final int SAFE = 0;
     public static final int HAZARD = 4;
     public static final int CRITICAL = 8;
-    public static final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 상하좌우
+    public static final int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; // 상하좌우
     private final int[][] map;
     // 생성자
     GeneratingPath(int[][] map){
@@ -90,11 +91,30 @@ public class GeneratingPath {
         }
         return realPath;
     }
-    /*
-    public ArrayList<Point> findRobotMovement(ArrayList<Point> path){
+/*
+//실제로는 로봇의 바라보고 있는 방향까지 구해야 함
+    public ArrayList<Point> findRobotMovement(ArrayList<Point> path, int[] currentRobotFacing){
+        ArrayList<Point> movement;
+        int currentface;
+        for(currentface = 0; directions[currentface][0] == currentRobotFacing[0] && directions[currentface][1] == currentRobotFacing[1]; currentface++);
+        for(int i = 1;i < path.size();i++){
+            Point tmppo = new Point(path.get(i).x - path.get(i-1).x,path.get(i).y - path.get(i-1).y);
+            int turnCnt = 0;
+            while(!(directions[currentface][0] == tmppo.x && directions[currentface][1] == tmppo.y)){
+                turnCnt++;
+                currentface++;
+                if(currentface >= 4)
+                    currentface = 0;
+            }
+            while(turnCnt > 0){
+                turnCnt--;
+                sim.movement move = new movement();
 
+            }
+
+        }
     }
-    */
+*/
 
     // 테스트 코드
     public static void main(String[] args) {
