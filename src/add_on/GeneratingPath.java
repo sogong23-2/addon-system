@@ -1,5 +1,6 @@
 package add_on;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 // map[][]을 받아 경로 계산
 // findPath 메서드로 경로 출력
@@ -8,7 +9,7 @@ public class GeneratingPath {
     public static final int HAZARD = 4;
     public static final int CRITICAL = 8;
     public static final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 상하좌우
-    private int[][] map;
+    private final int[][] map;
     // 생성자
     GeneratingPath(int[][] map){
         this.map = map;
@@ -69,6 +70,7 @@ public class GeneratingPath {
         int currentX = startX;
         int currentY = startY;
         ArrayList<Point> realPath = new ArrayList<>();
+        realPath.add(new Point(currentX, currentY));
 
         // 목적지가 여러개이므로 dfs를 여러번 적용하여 경로찾기
         while(isExistCritical()) {
@@ -78,22 +80,28 @@ public class GeneratingPath {
             boolean found = dfs(currentX, currentY, visited, tmpPath);
             currentX = tmpPath.get(tmpPath.size() - 1).x;
             currentY = tmpPath.get(tmpPath.size() - 1).y;
+            tmpPath.remove(0);
             realPath.addAll(tmpPath);
 
             if (!found) {
                 System.out.println("목적지에 도달할 수 없습니다.");
+                break;
             }
         }
         return realPath;
     }
     /*
+    public ArrayList<Point> findRobotMovement(ArrayList<Point> path){
+
+    }
+    */
+
     // 테스트 코드
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("지도의 크기 n m 입력: ");
         int n = scanner.nextInt();
         int m = scanner.nextInt();
-
         int[][] map = new int[n][m];
 
         System.out.println("지도의 정보 입력:");
@@ -102,12 +110,13 @@ public class GeneratingPath {
                 map[i][j] = scanner.nextInt();
             }
         }
+        GeneratingPath gp = new GeneratingPath(map);
 
         System.out.print("출발 위치 x y 입력: ");
         int startX = scanner.nextInt();
         int startY = scanner.nextInt();
 
-        List<Point> path = findPath(map, startX, startY);
+        ArrayList<Point> path = gp.findPath(startX, startY);
 
         if (!path.isEmpty()) {
             System.out.println("경로:");
@@ -117,6 +126,5 @@ public class GeneratingPath {
         }
     }
 
-     */
+
 }
-// 문제점: critical의 path의 Point 중복됨
