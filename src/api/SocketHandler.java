@@ -27,6 +27,7 @@ public class SocketHandler {
             case "UDM":
                 //tokens = ["h4,2/"]
                 System.out.println("UDM");
+                System.out.println(tokens);
                 break;
             default:
                 //invalid handling

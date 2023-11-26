@@ -7,6 +7,7 @@ public class SocketManager {
     private static List<String> receivedQueue = new ArrayList<>();
 
     public static void sendRequest(String data) {
+        System.out.println("sendRequest: " + data);
         ResponseListener responseListener = response -> {
             System.out.println("response: " + response);
             receivedQueue.add(response);
