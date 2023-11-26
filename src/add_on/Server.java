@@ -20,12 +20,13 @@ public class Server {
 
             String message;
             // DealingMessage 클래스의 인스턴스 생성
-            DealingMessage dealingMessage = new DealingMessage();
+            DealingMessage dm = new DealingMessage();
+            dm.startListening();
             while (!Objects.equals(message = reader.readLine(), "quit")) {
                 System.out.println("클라이언트로부터 받은 메시지: " + message);
 
                 // 받은 메시지를 DealingMessage 클래스의 addMessage() 메서드로 전달
-                dealingMessage.addMessage(message);
+                dm.addMessage(message);
             }
 
             reader.close();

@@ -3,11 +3,14 @@ package add_on;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
+
 public class DealingMessage {
     public static final int SAFE = 0;
     public static final int HAZARD = 4;
     public static final int CRITICAL = 8;
     public static map map;
+    BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
 
     void ULM(String[] message) {
         for (int i = 1; i < message.length; i++) {
@@ -52,7 +55,7 @@ public class DealingMessage {
         }
     }
 
-    private final BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
+
 
     public void addMessage(String message) {
         try {
@@ -87,6 +90,12 @@ public class DealingMessage {
                         System.out.println("PSR 메시지를 받았습니다. 프로그램을 잠시 정지합니다.");
                         ChildThread childThread = new ChildThread(this); // DealingMessage 인스턴스를 넘겨줌
                         childThread.start();
+                        // 자식스레드 종료할때까지 대기
+                        try {
+                            childThread.join();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         break;
                     default:
                         break;
@@ -107,6 +116,7 @@ public class DealingMessage {
 
 class ChildThread extends Thread {
     private DealingMessage dealingMessage;
+    BlockingQueue<String> messageQueue;
 
     // 생성자를 통해 DealingMessage 인스턴스를 받음
     public ChildThread(DealingMessage dealingMessage) {
@@ -118,10 +128,15 @@ class ChildThread extends Thread {
         System.out.println("자식 스레드가 실행됩니다.");
 
         while (true) {
-            String message = dealingMessage.getMessage(); // RSR 메시지를 받기 위해 큐에서 메시지 확인
-            if (message != null && message.equals("RSR")) {
-                System.out.println("RSR 메시지를 받았습니다. 자식 스레드를 종료합니다.");
-                break;
+            try {
+                sleep(1000);
+                String message = dealingMessage.getMessage(); // RSR 메시지를 받기 위해 큐에서 메시지 확인
+                if (message != null && message.equals("RSR")) {
+                    System.out.println("RSR 메시지를 받았습니다. 자식 스레드를 종료합니다.");
+                    break;
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
