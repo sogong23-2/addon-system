@@ -7,13 +7,15 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Hello world!");
         SocketManager.openServer();
-        sleep(1100);
+        sleep(2000);
         SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(0, 1));
-        sleep(1100);
+        sleep(2000);
         SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(1, 1));
-        sleep(1100);
+        sleep(2000);
+        SocketManager.sendRequest(TokenEncoder.tokenSensored("b1,0/"));
+        sleep(2000);
         SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(2, 1));
-        sleep(1100);
+        sleep(2000);
         SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(3, 1));
 
     }

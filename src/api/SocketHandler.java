@@ -2,15 +2,18 @@ package api;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class SocketHandler {
 
-    public static void apiResolver(String data) {
+    public static void apiResolver(String data) throws InterruptedException {
         String cmd = TokenDecoder.parseCmd(data);
         List<String> tokens = TokenDecoder.parseToToken(data);
 
         //TODO 핸들링 코드 작성
         // System.out 코드들 'HANDLER(tokens)'로 대체할 것
         switch (cmd) {
+            //TODO Pause 할 때 이 스레드가 아닌 메인 스레드가 Pause 할 수 있도록 다뤄야함
             case "PSR":
                 //tokens = []
                 System.out.println("PSR");
