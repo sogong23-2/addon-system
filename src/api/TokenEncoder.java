@@ -11,6 +11,7 @@ public class TokenEncoder {
         return token;
     }
 
+
     //TODO input 자료형은 System에서 쓰는 형태로 바꾸기
     String tokenSensored(String infomation){
         String token = "UDG/";
