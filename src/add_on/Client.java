@@ -1,3 +1,4 @@
+//테스트용 클라이언트
 package add_on;
 
 import java.io.IOException;
@@ -6,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.Scanner;
+
 public class Client {
     public static void main(String[] args) {
         final String SERVER_IP = "127.0.0.1"; // 서버의 IP 주소

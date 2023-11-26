@@ -25,6 +25,7 @@ public class Server {
 
             SendingMessage sm = new SendingMessage();
             ArrayList<GeneratingPath.Point> tmpmovement = new ArrayList<>();
+            boolean isChanged = true;
 
             while (!Objects.equals(message = reader.readLine(), "quit")) {
                 System.out.println("클라이언트로부터 받은 메시지: " + message);
@@ -33,14 +34,18 @@ public class Server {
                 dm.addMessage(message);
 
                 if(!Objects.isNull(DealingMessage.map.map)) {
+                    //센서감지 로직
+                    // 근처의 hazard, blob 감지하고 지도 업데이트 하고 사용자에게 메시지를 보내야 함 만약 감지된게 있으면 isChanged ture로
+
                     // 센서에 hazard나 blob이 감지됐으면 경로 다시 계산, 초깃값은 true여야 함
-                    if(isChanged()) {
+                    if(isChanged) {
                         // tmpmap에 가져와서 경로 계산
                         int[][] tmpmap = new int[DealingMessage.map.map.length][DealingMessage.map.map[0].length];
                         for (int i = 0; i < DealingMessage.map.map.length; i++)
                             System.arraycopy(DealingMessage.map.map[i], 0, tmpmap[i], 0, DealingMessage.map.map[0].length);
                         GeneratingPath gp = new GeneratingPath(tmpmap);
                         tmpmovement = gp.findPath(DealingMessage.map.robotX, DealingMessage.map.robotY);
+                        isChanged = false;
                     }
                     // 로봇 위치 업데이트
                     tmpmovement.remove(0);
