@@ -11,8 +11,8 @@ class SocketInstance {
 
     //TODO change init settings
     private final int port = 5002;
-    private final String destinationIP = "10.0.2.16";
-    private final int destinationPort = 5001;
+    private String destinationIP = "172.30.122.18";
+    private int destinationPort = 5001;
 
     public SocketInstance(ResponseListener responseListener) {
         this.responseListener = responseListener;
@@ -30,11 +30,21 @@ class SocketInstance {
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     OutputStreamWriter writer = new OutputStreamWriter(clientSocket.getOutputStream());
-                    System.out.println(clientSocket.getInetAddress().getHostAddress() + " connected");
                     String request = reader.readLine();
-                    System.out.println("request: " + request);
 
                     SocketHandler.apiResolver(request);
+
+//
+//                    AddressInfo addressInfo =
+//                            new AddressInfo(
+//                                    clientSocket.getInetAddress().getHostAddress(),
+//                                    clientSocket.getPort()
+//                            );
+//
+//                    destinationIP = addressInfo.getIpAddress();
+//                    destinationPort = addressInfo.getPort();
+//                    System.out.println("destinationIP: " + destinationIP);
+//                    System.out.println("destinationPort: " + destinationPort);
 
                     writer.write("ACK/r");
 
