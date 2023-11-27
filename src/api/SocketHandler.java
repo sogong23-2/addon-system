@@ -1,11 +1,7 @@
 package api;
-import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
-
 public class SocketHandler {
-
     public static void apiResolver(String data) throws InterruptedException {
         String cmd = TokenDecoder.parseCmd(data);
         List<String> tokens = TokenDecoder.parseToToken(data);

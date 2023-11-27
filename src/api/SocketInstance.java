@@ -6,12 +6,13 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
 class SocketInstance {
     private final ResponseListener responseListener;
 
     //TODO change init settings
     private final int port = 5002;
-    private String destinationIP = "192.168.0.113";
+    private String destinationIP = "10.0.32.186";
     private int destinationPort = 5001;
 
     public SocketInstance(ResponseListener responseListener) {
