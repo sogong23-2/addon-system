@@ -2,12 +2,7 @@ package api;
 import java.util.List;
 
 public class SocketHandler {
-<<<<<<< HEAD
-    public static void apiResolver(String data) throws InterruptedException {
-=======
-
     public static int[][] apiResolver(String data) throws InterruptedException {
->>>>>>> 6214cdd86e1196d24657f22e961cdbe1681f3b84
         String cmd = TokenDecoder.parseCmd(data);
         List<String> tokens = TokenDecoder.parseToToken(data);
 

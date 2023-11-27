@@ -1,41 +1,25 @@
+import add_on.*;
 import api.SocketManager;
 import api.TokenEncoder;
 import api.*;
-
-import static java.lang.Thread.onSpinWait;
-import static java.lang.Thread.sleep;
-
-import add_on.*;
-
-import api.SocketManager;
-import api.TokenEncoder;
+import java.util.*;
 
 import static java.lang.Thread.sleep;
 
-public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println("Hello world!");
-        SocketManager.openServer();
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(0, 1));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(1, 1));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenSensored("b1,0/"));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(2, 1));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(3, 1));
 
+/*
+          Map size: 4 x 5
+    Starting point: (1, 2)
+              Spot: (4, 2), (1, 5)
+            Hazard: (1, 0), (3, 2)
+ */
 
+/*
+    지도의 숫자의 의미
     0: 탐색이 안된 지역
-
     1: 안전한 지역 ( 아무것도 없는 지역 )
-
     2: predefined spot
-
     4: hazard
-
     8: color blob
  */
 
@@ -286,3 +270,4 @@ public class Main {
     }
 }
 */
+
