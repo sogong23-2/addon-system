@@ -4,9 +4,9 @@ import java.util.Scanner;
 import java.io.FileReader;
 
 public class map {
-
-    String path = "./map.txt";
-    int r, c;
+    String currentDirectory = System.getProperty("user.dir");
+    String path = currentDirectory + "/src/map.txt";
+    public int r, c;
 
     int[][] map;
 
@@ -21,8 +21,8 @@ public class map {
         // get map from ./map.txt
         try {
             Scanner sc = new Scanner(new FileReader(path));
-            for(int i = 0; i < r; i++){
-                for(int j = 0; j < c; j++){
+            for(int i = 0; i < this.r; i++){
+                for(int j = 0; j < this.c; j++){
                     this.map[i][j] = sc.nextInt();
                 }
             }
@@ -32,6 +32,7 @@ public class map {
     }
 
     public int getMapValue(int x, int y){
+        if (x < 0 || x >= r || y < 0 || y >= c) return -1;
         return this.map[x][y];
     }
 }

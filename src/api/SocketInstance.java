@@ -12,7 +12,12 @@ class SocketInstance {
 
     //TODO change init settings
     private final int port = 5002;
+<<<<<<< HEAD
     private String destinationIP = "10.0.32.186";
+=======
+    private String destinationIP = "192.168.0.113";
+
+>>>>>>> 6214cdd86e1196d24657f22e961cdbe1681f3b84
     private int destinationPort = 5001;
 
     public SocketInstance(ResponseListener responseListener) {
