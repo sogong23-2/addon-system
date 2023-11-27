@@ -34,5 +34,4 @@ public class TokenEncoder {
         information += "/";
         return information;
     }
-
 }

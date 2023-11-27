@@ -11,7 +11,6 @@ public class SocketHandler {
         List<String> tokens = TokenDecoder.parseToToken(data);
 
         int[][] ret = new int[50][3];
-
         //TODO 핸들링 코드 작성
         // System.out 코드들 'HANDLER(tokens)'로 대체할 것
         switch (cmd) {

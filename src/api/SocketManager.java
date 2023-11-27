@@ -6,7 +6,6 @@ import java.util.List;
 public class SocketManager {
     public static List<String> receivedQueue = new ArrayList<>();
 
-
     public static void sendRequest(String data) {
         System.out.println("sendRequest: " + data);
         ResponseListener responseListener = response -> {

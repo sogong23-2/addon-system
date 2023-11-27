@@ -7,23 +7,26 @@ import static java.lang.Thread.sleep;
 
 import add_on.*;
 
-import javax.management.openmbean.SimpleType;
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.Stack;
-import java.util.Queue;
+import api.SocketManager;
+import api.TokenEncoder;
 
-import static java.lang.System.exit;
+import static java.lang.Thread.sleep;
 
-/*
-          Map size: 4 x 5
-    Starting point: (1, 2)
-              Spot: (4, 2), (1, 5)
-            Hazard: (1, 0), (3, 2)
- */
+public class Main {
+    public static void main(String[] args) throws InterruptedException {
+        System.out.println("Hello world!");
+        SocketManager.openServer();
+        sleep(2000);
+        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(0, 1));
+        sleep(2000);
+        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(1, 1));
+        sleep(2000);
+        SocketManager.sendRequest(TokenEncoder.tokenSensored("b1,0/"));
+        sleep(2000);
+        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(2, 1));
+        sleep(2000);
+        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(3, 1));
 
-/*
-    지도의 숫자의 의미
 
     0: 탐색이 안된 지역
 
