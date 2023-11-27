@@ -1,3 +1,4 @@
+
 import api.SocketManager;
 import api.TokenEncoder;
 
@@ -17,6 +18,7 @@ public class Main {
         SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(2, 1));
         sleep(2000);
         SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(3, 1));
+
 
     }
 }
