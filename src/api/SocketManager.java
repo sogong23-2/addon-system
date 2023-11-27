@@ -3,9 +3,8 @@ package api;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SocketManager {
-    private static List<String> receivedQueue = new ArrayList<>();
+    public static List<String> receivedQueue = new ArrayList<>();
 
     public static void sendRequest(String data) {
         System.out.println("sendRequest: " + data);
@@ -26,4 +25,3 @@ public class SocketManager {
         socket.serverMode();
     }
 }
-

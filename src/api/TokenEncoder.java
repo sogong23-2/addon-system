@@ -13,12 +13,25 @@ public class TokenEncoder {
 
 
     //TODO input 자료형은 System에서 쓰는 형태로 바꾸기
-    public static String tokenSensored(String infomation){
+    public static String tokenSensored(int x, int y, int value){
         String token = "UMG/";
-        token += infomation;
+        token += pos_to_information(x, y, value);
         token += "\r";
-        token = "UMG/b1,0/\r";
         return token;
     }
 
+    public static String pos_to_information(int x, int y, int value)
+    {
+        String v = "";
+        if (value == 4) v = "h";
+        else if (value == 8) v = "b";
+
+        String information = "";
+        information += v;
+        information += x;
+        information += ",";
+        information += y;
+        information += "/";
+        return information;
+    }
 }
