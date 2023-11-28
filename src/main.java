@@ -1,13 +1,17 @@
+import api.SocketHandler;
 import api.SocketManager;
 import api.TokenEncoder;
-import api.*;
 
-import static java.lang.Thread.onSpinWait;
 import static java.lang.Thread.sleep;
+
+import java.io.IOException;
+import java.net.Socket;
 
 import add_on.*;
 
 import javax.management.openmbean.SimpleType;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -43,8 +47,6 @@ public class main {
     public static final int SPOT = 2;
     public static final int HAZARD = 4;
     public static final int COLOR_BLOB = 8;
-
-    int received_command = 0;
 
     static Stack<int[]> find_route(map m, sim s, int[] position, int[] target) {
         //print arguments
@@ -94,9 +96,11 @@ public class main {
 
     }
 
-    static Queue move_to(map m, sim s, int[] target) throws InterruptedException{
+    static Queue move_to(map m, sim s, int[] target) throws InterruptedException, IOException {
         int position[] = s.getPosition();
         int[] diff = {target[0] - position[0], target[1] - position[1]};
+
+        int[][] ret;
 
         Stack<int[]> movement;
         Queue<String> path = new LinkedList<>();
@@ -122,7 +126,8 @@ public class main {
                 int[] colorblob = scan_result[1];
 
                 if(hazard[0] == 1) {SocketManager.sendRequest(TokenEncoder.tokenSensored(position[0]+position[2], position[1]+position[3], HAZARD)); m.insertValue(position[0]+position[2], position[1]+position[3], HAZARD);}
-                if(colorblob[0] == 1) {SocketManager.sendRequest(TokenEncoder.tokenSensored(position[0]+1, position[1]+0, COLOR_BLOB)); m.insertValue(position[0]+1, position[1]+0, COLOR_BLOB);}
+                if(colorblob[0] == 1) {
+                    SocketManager.sendRequest(TokenEncoder.tokenSensored(position[0]+1, position[1]+0, COLOR_BLOB)); m.insertValue(position[0]+1, position[1]+0, COLOR_BLOB);}
                 if(colorblob[1] == 1) {SocketManager.sendRequest(TokenEncoder.tokenSensored(position[0]+0, position[1]-1, COLOR_BLOB)); m.insertValue(position[0]+0, position[1]-1, COLOR_BLOB);}
                 if(colorblob[2] == 1) {SocketManager.sendRequest(TokenEncoder.tokenSensored(position[0]-1, position[1]+0, COLOR_BLOB)); m.insertValue(position[0]-1, position[1]+0, COLOR_BLOB);}
                 if(colorblob[3] == 1) {SocketManager.sendRequest(TokenEncoder.tokenSensored(position[0]+0, position[1]+1, COLOR_BLOB)); m.insertValue(position[0]+0, position[1]+1, COLOR_BLOB);}
@@ -147,44 +152,65 @@ public class main {
                 check received socket
                  */
 
-                if (SocketManager.receivedQueue.size() > 0) {
-                    String data = SocketManager.receivedQueue.get(0);
-                    SocketManager.receivedQueue.remove(0);
-                    int[][] ret = SocketHandler.apiResolver(data);
+                String currentDirectory = System.getProperty("user.dir");
+                String path1 = currentDirectory + "/src/tmp.txt";
+
+                String data = "";
+
+                boolean flag = false;
+                boolean flag2 = false;
+                flag = Files.exists(Paths.get(path1));
+                if (flag) {
+                    data = new String(Files.readAllBytes(Paths.get(path1)));
+                    Files.delete(Paths.get(path1));
+
+                    ret = SocketHandler.apiResolver(data);
+
                     if (ret[0][0] == -1) {
                         while (true) {
-                            if (SocketManager.receivedQueue.size() > 0) {
-                                data = SocketManager.receivedQueue.get(0);
-                                SocketManager.receivedQueue.remove(0);
-                                ret = SocketHandler.apiResolver(data);
-                                if (ret[0][0] == -2) {
-                                    break;
-                                }
+                            flag2 = Files.exists(Paths.get(path1));
+                            if (flag2) {
+                                data = new String(Files.readAllBytes(Paths.get(path1)));
+                                Files.delete(Paths.get(path1));
+                                break;
                             }
                         }
                     }
-                    else{
-                        m.insertValue(ret[0][0], ret[0][1], ret[0][2]);
+                    else {
+                        m.insertValue(ret[1][0], ret[1][1], ret[1][2]);
                     }
+
                 }
+
             }
         }
         return path;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+
+
+    public static void main(String[] args) throws Exception {
         SocketManager.openServer();
 
-        int[][] map_init;
+        String currentDirectory = System.getProperty("user.dir");
+        String path = currentDirectory + "/src/tmp.txt";
+
+        String data = "";
+
+        boolean flag = false;
         while (true) {
-            if (SocketManager.receivedQueue.size() > 0) {
-                String data = SocketManager.receivedQueue.get(0);
-                SocketManager.receivedQueue.remove(0);
-                System.out.println(data);
-                map_init = SocketHandler.apiResolver(data);
+            flag = Files.exists(Paths.get(path));
+            if (flag) {
+                data = new String(Files.readAllBytes(Paths.get(path)));
+                System.out.println(data + "main");
+                Files.delete(Paths.get(path));
+                flag = false;
                 break;
             }
         }
+
+
+        int[][] map_init = SocketHandler.apiResolver(data);
 
         int init_length = map_init[0][0];
 
@@ -196,26 +222,32 @@ public class main {
         int[][] targets = {{-1, -1}, {-1, -1}};
 
         for(int i=0; i<init_length; i++){
-            if (map_init[i][3] == 'r' - '0')
+            System.out.println(map_init[i][0] + " " + map_init[i][1] + " " + map_init[i][2]);
+        }
+
+        System.out.println("done\n");
+
+        for(int i=0; i<init_length; i++){
+            if (map_init[i][2] == 'r')
             {
                 position[0] = map_init[i][0];
                 position[1] = map_init[i][1];
             }
-            if (map_init[i][3] == 'm' - '0')
+            if (map_init[i][2] == 'm')
             {
                 r = map_init[i][0];
                 c = map_init[i][1];
                 m = new map(r, c);
             }
-            if (map_init[i][3] == 'b' - '0')
+            if (map_init[i][2] == 'b')
             {
                 m.insertValue(map_init[i][0], map_init[i][1], COLOR_BLOB);
             }
-            if (map_init[i][3] == 'h' - '0')
+            if (map_init[i][2] == 'h')
             {
                 m.insertValue(map_init[i][0], map_init[i][1], HAZARD);
             }
-            if (map_init[i][3] == 't' - '0') {
+            if (map_init[i][2] == 't') {
                 if (targets[0][0] == -1){
                     targets[0][0] = map_init[i][0];
                     targets[0][1] = map_init[i][1];

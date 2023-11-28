@@ -1,10 +1,14 @@
 package api;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 class SocketInstance {
     private final ResponseListener responseListener;
@@ -31,8 +35,15 @@ class SocketInstance {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     OutputStreamWriter writer = new OutputStreamWriter(clientSocket.getOutputStream());
                     String request = reader.readLine();
+                    //int[][] ret = SocketHandler.apiResolver(request);
 
-                    SocketHandler.apiResolver(request);
+                    String currentDirectory = System.getProperty("user.dir");
+                    String path = currentDirectory + "/src/tmp.txt";
+
+                    request = request + "@";
+
+                    Files.write(Paths.get(path), request.getBytes());
+                    // send ret to main
 
 //
 //                    AddressInfo addressInfo =
