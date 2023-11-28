@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class map{
 
-    int r, c;
+    public int r, c;
 
     int[][] map;
 
@@ -27,12 +27,13 @@ public class map{
     }
 
     public int getMapValue(int x, int y){
+        if (x < 0 || x >= r || y < 0 || y >= c) return -1;
         return this.map[x][y];
     }
 
     public void insertValue(int x, int y, int type){
         this.map[x][y] = type;
-        send_data(this.map);
+        //send_data(this.map);
     }
 
     public int[][] getMap(){
