@@ -11,7 +11,7 @@ class SocketInstance {
 
     //TODO change init settings
     private final int port = 5002;
-    private String destinationIP = "192.168.0.113";
+    private String destinationIP = "172.30.1.1";
 
     private int destinationPort = 5001;
 
