@@ -146,7 +146,7 @@ public class main {
                 SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(position[0], position[1]));
                 diff[0] = target[0] - position[0];
                 diff[1] = target[1] - position[1];
-                sleep(1000);
+                sleep(2000);
 
                 /*
                 check received socket
@@ -172,7 +172,14 @@ public class main {
                             if (flag2) {
                                 data = new String(Files.readAllBytes(Paths.get(path1)));
                                 Files.delete(Paths.get(path1));
-                                break;
+                                ret = SocketHandler.apiResolver(data);
+                                if (ret[0][0] == -2) {
+                                    break;
+                                } else if (ret[0][0] == -3) {
+                                    m.insertValue(ret[1][0], ret[1][1], ret[1][2]);
+                                    break;
+                                    
+                                }
                             }
                         }
                     }

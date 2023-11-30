@@ -66,6 +66,7 @@ public class SocketHandler {
                 //tokens = ["h4,2/"]
                 System.out.println("UDM");
                 System.out.println(tokens);
+                ret[0][0] = -3;
                 ret[1][0] = tokens.get(0).charAt(1) - '0';
                 ret[1][1] = tokens.get(0).charAt(3) - '0';
                 switch (tokens.get(0).charAt(0)) {
