@@ -172,6 +172,8 @@ public class main {
                             if (flag2) {
                                 data = new String(Files.readAllBytes(Paths.get(path1)));
                                 Files.delete(Paths.get(path1));
+                                //ret = SocketHandler.apiResolver(data);
+                                //if (ret[0][0] != -1) break;
                                 break;
                             }
                         }
@@ -187,12 +189,9 @@ public class main {
         return path;
     }
 
-
-
-    public static void main(String[] args) throws Exception {
-        SocketManager.openServer();
-
+    static int[][] get_init_map() throws IOException, InterruptedException {
         String currentDirectory = System.getProperty("user.dir");
+        //System.out.println(currentDirectory);
         String path = currentDirectory + "/src/tmp.txt";
 
         String data = "";
@@ -209,10 +208,17 @@ public class main {
             }
         }
 
+        int[][] init_data = SocketHandler.apiResolver(data);
 
-        int[][] map_init = SocketHandler.apiResolver(data);
+        return init_data;
+    }
 
-        int init_length = map_init[0][0];
+    public static void main(String[] args) throws Exception {
+        SocketManager.openServer();
+
+        int[][] init_data = get_init_map();
+
+        int init_length = init_data[0][0];
 
         map m = null;
         int r = 0;
@@ -222,44 +228,42 @@ public class main {
         int[][] targets = {{-1, -1}, {-1, -1}};
 
         for(int i=0; i<init_length; i++){
-            System.out.println(map_init[i][0] + " " + map_init[i][1] + " " + map_init[i][2]);
+            System.out.println(init_data[i][0] + " " + init_data[i][1] + " " + init_data[i][2]);
         }
 
         System.out.println("done\n");
 
         for(int i=0; i<init_length; i++){
-            if (map_init[i][2] == 'r')
+            if (init_data[i][2] == 'r')
             {
-                position[0] = map_init[i][0];
-                position[1] = map_init[i][1];
+                position[0] = init_data[i][0];
+                position[1] = init_data[i][1];
             }
-            if (map_init[i][2] == 'm')
+            if (init_data[i][2] == 'm')
             {
-                r = map_init[i][0];
-                c = map_init[i][1];
+                r = init_data[i][0];
+                c = init_data[i][1];
                 m = new map(r, c);
             }
-            if (map_init[i][2] == 'b')
+            if (init_data[i][2] == 'b')
             {
-                m.insertValue(map_init[i][0], map_init[i][1], COLOR_BLOB);
+                m.insertValue(init_data[i][0], init_data[i][1], COLOR_BLOB);
             }
-            if (map_init[i][2] == 'h')
+            if (init_data[i][2] == 'h')
             {
-                m.insertValue(map_init[i][0], map_init[i][1], HAZARD);
+                m.insertValue(init_data[i][0], init_data[i][1], HAZARD);
             }
-            if (map_init[i][2] == 't') {
+            if (init_data[i][2] == 't') {
                 if (targets[0][0] == -1){
-                    targets[0][0] = map_init[i][0];
-                    targets[0][1] = map_init[i][1];
+                    targets[0][0] = init_data[i][0];
+                    targets[0][1] = init_data[i][1];
                 }
                 else {
-                    targets[1][0] = map_init[i][0];
-                    targets[1][1] = map_init[i][1];
+                    targets[1][0] = init_data[i][0];
+                    targets[1][1] = init_data[i][1];
                 }
             }
         }
-
-        int[] direction = {1, 0};
 
         System.out.println("Map size: " + r + " " + c);
 
@@ -285,10 +289,10 @@ public class main {
         System.out.println("\n");
 
 
-        int[][] map1 = m.getMap();
+        int[][] scannedMap = m.getMap();
         for (int i = c - 1; i >= 0; i--) {
             for (int j = 0; j < r; j++) {
-                System.out.print(map1[j][i] + " ");
+                System.out.print(scannedMap[j][i] + " ");
             }
             System.out.println();
         }
@@ -296,22 +300,3 @@ public class main {
     }
 }
 
-/*
-public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println("Hello world!");
-        SocketManager.openServer();
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(0, 1));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(1, 1));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenSensored("b1,0/"));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(2, 1));
-        sleep(2000);
-        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(3, 1));
-
-    }
-}
-*/

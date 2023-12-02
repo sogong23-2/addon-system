@@ -15,7 +15,7 @@ class SocketInstance {
 
     //TODO change init settings
     private final int port = 5002;
-    private String destinationIP = "10.0.24.165";
+    private String destinationIP = "10.0.33.203";
     private int destinationPort = 5001;
 
     public SocketInstance(ResponseListener responseListener) {

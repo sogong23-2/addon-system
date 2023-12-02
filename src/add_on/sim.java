@@ -1,36 +1,19 @@
-/*package add_on;
-
-import sim.main;
-
-public class sim {
-    main robot;
-
-    public sim(int x, int y, int r, int c) {
-        this.robot = new main(x,y,r,c);
-    }
-
-}
-
- */
-
 package add_on;
 
-import sim.*;
+import sim.movement;
 import sim.sensor.*;
 import java.util.Random;
 
 public class sim {
-    sensor hazard, colorblob, positioning;
-    movement move;
-    map map;
-    public int [] position, direction; // 0: x, 1: y
+    private sensor hazard, colorblob, positioning;
+    private movement move;
+    private int [] position, direction; // 0: x, 1: y
 
     public sim (int x, int y, int r, int c) {
         hazard = new hazard(r, c);
         colorblob = new colorblob(r, c);
-        positioning = new positioning();
+        positioning = new positioning(r, c);
 
-        map = new map(r, c);
 
         this.position = new int[2];
         this.position[0] = x;

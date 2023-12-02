@@ -1,6 +1,7 @@
 package sim.sensor;
 
-public class positioning implements sensor {
+public class positioning extends map {
+
     public int[] getSensorValue(int[] pos, int[] direction) {
         // 0x FF FF FF FF
         //    x  y  {direction}
@@ -14,6 +15,9 @@ public class positioning implements sensor {
         sensorVal[3] = direction[1];
 
         return sensorVal;
+    }
+    public positioning(int r, int c){
+        super(r,c);
     }
 
 }
