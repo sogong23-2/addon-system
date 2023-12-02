@@ -1,7 +1,5 @@
 package sim.sensor;
 
-import sim.main;
-
 public class positioning implements sensor {
     public int[] getSensorValue(int[] pos, int[] direction) {
         // 0x FF FF FF FF

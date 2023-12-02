@@ -26,8 +26,8 @@ public class main {
     int[] position, direction; // 0: x, 1: y
 
     public main (int x, int y, int r, int c) {
-        hazard = new hazard();
-        colorblob = new colorblob();
+        hazard = new hazard(r,c);
+        colorblob = new colorblob(r,c);
         positioning = new positioning();
 
         map = new map(r, c);

@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class map{
 
-    int r, c;
+    public int r, c;
 
     int[][] map;
 
@@ -27,12 +27,13 @@ public class map{
     }
 
     public int getMapValue(int x, int y){
+        if (x < 0 || x >= r || y < 0 || y >= c) return -1;
         return this.map[x][y];
     }
 
     public void insertValue(int x, int y, int type){
         this.map[x][y] = type;
-        send_data(this.map);
+        //send_data(this.map);
     }
 
     public int[][] getMap(){
@@ -54,9 +55,9 @@ public class map{
         final int SERVER_PORT = 12345;
 
         try (Socket socket = new Socket(SERVER_IP, SERVER_PORT);
-            Scanner serverInput = new Scanner(socket.getInputStream());
-            PrintWriter clientOutput = new PrintWriter(socket.getOutputStream(), true);
-            Scanner userInput = new Scanner(System.in)) {
+             Scanner serverInput = new Scanner(socket.getInputStream());
+             PrintWriter clientOutput = new PrintWriter(socket.getOutputStream(), true);
+             Scanner userInput = new Scanner(System.in)) {
 
             // 서버에 연결되면 사용자로부터 메시지 입력
             while (true) {
