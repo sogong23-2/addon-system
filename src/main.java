@@ -2,8 +2,10 @@ import api.SocketHandler;
 import api.SocketManager;
 import api.TokenEncoder;
 
+import static java.lang.System.setOut;
 import static java.lang.Thread.sleep;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -135,6 +137,10 @@ public class main {
                 if(hazard[0] == 1){
                     break;
                 }
+                position = s.getPosition();
+                if(m.getMapValue(position[0]+position[2], position[1]+position[3]) == HAZARD){
+                    break;
+                }
 
                 int[] pos = s.getPosition();
                 s.forward();
@@ -146,7 +152,10 @@ public class main {
                 if (wrong_move) {
                     System.out.println("wrong move\n");
                     position = s.getPosition();
-                    SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(position[0], position[1]));
+                    if(m.getMapValue(position[0], position[1]) != HAZARD){
+                        SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(position[0], position[1]));
+                    }
+                    //SocketManager.sendRequest(TokenEncoder.tokenMoveRobot(position[0], position[1]));
                     sleep(2000);
                     s.turn();
                     s.turn();
@@ -157,9 +166,6 @@ public class main {
                     s.turn();
                 }
                 sleep(1000);
-                /*
-                    잘못 움직일 경우 감지하여 복구하는 코드 작성 필요
-                 */
                 //path.offer("forward ");
                 System.out.println("forward\n");
                 position = s.getPosition();
@@ -192,6 +198,9 @@ public class main {
                             if (flag2) {
                                 data = new String(Files.readAllBytes(Paths.get(path1)));
                                 Files.delete(Paths.get(path1));
+                                ret = SocketHandler.apiResolver(data);
+                                System.out.println(data);
+                                m.insertValue(ret[1][0], ret[1][1], ret[1][2]);
                                 //ret = SocketHandler.apiResolver(data);
                                 //if (ret[0][0] != -1) break;
                                 break;
@@ -199,6 +208,7 @@ public class main {
                         }
                     }
                     else {
+                        SocketHandler.apiResolver(data);
                         m.insertValue(ret[1][0], ret[1][1], ret[1][2]);
                     }
 
@@ -284,7 +294,25 @@ public class main {
                 }
             }
         }
+        /*
+        int[][] array = m.getMap();
+        String currentDirectory = System.getProperty("user.dir");
+        String filePath = currentDirectory + "/src/map.txt";
 
+        try (FileWriter writer = new FileWriter(filePath)) {
+            // 배열의 각 행을 파일에 쓰기
+            for (int[] row : array) {
+                for (int value : row) {
+                    // 각 값을 파일에 쓰기
+                    writer.write(value + " ");
+                }
+                // 행이 끝날 때마다 줄 바꿈
+                writer.write("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
         System.out.println("Map size: " + r + " " + c);
 
         System.out.print("Starting point: ");
@@ -310,8 +338,8 @@ public class main {
 
 
         int[][] scannedMap = m.getMap();
-        for (int i = c - 1; i >= 0; i--) {
-            for (int j = 0; j < r; j++) {
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
                 System.out.print(scannedMap[j][i] + " ");
             }
             System.out.println();

@@ -36,7 +36,7 @@ public class sim {
 
             Random rand = new Random();
             int randomNum = rand.nextInt((100 - 1) + 1) + 1;
-            if (randomNum <= 100) {
+            if (randomNum <= 3) {
                 int t = hazard.getSensorValue(this.position, this.direction)[0];
                 int[] tmp = move.forward(this.position, this.direction);
                 if (tmp[0] >= 0 && tmp[0] < this.r && tmp[1] >= 0 && tmp[1] < this.c && t != 1) {
@@ -46,7 +46,7 @@ public class sim {
             }
         }
         else {
-            this.flag = false;
+            //this.flag = false;
             this.position = move.forward(this.position, this.direction);
         }
     }
